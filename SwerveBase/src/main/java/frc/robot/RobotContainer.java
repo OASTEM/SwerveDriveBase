@@ -6,6 +6,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.JaydenAuto;
 import frc.robot.commands.PadDrive;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -75,7 +76,7 @@ public class RobotContainer {
 
     swerveSubsystem = new SwerveSubsystem();
     swerveSubsystem.setDefaultCommand(new PadDrive(swerveSubsystem, pad, true));
-    
+
     //Configure auto chooser
     SmartDashboard.putData("Auto Chooser", m_chooser);
 
@@ -110,8 +111,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return swerveSubsystem.followTrajectoryCommand(bluePath, true);
-
-    return m_chooser.getSelected();
+    return new JaydenAuto(swerveSubsystem);
+    // return m_chooser.getSelected();
   }
 
   /**

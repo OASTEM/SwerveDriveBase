@@ -19,6 +19,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -195,6 +196,9 @@ public class SwerveModule {
       }
 
       newRotations = currentRotations + angleToRotations(change, MotorConstants.STEER_MOTOR_GEAR_RATIO);
+      SmartDashboard.putNumber("Set Rotations " + steerMotor.getDeviceID(), newRotations);
+      SmartDashboard.putNumber("Actual Rotations " + steerMotor.getDeviceID(), steerMotor.getRotorPosition().getValue());
+      SmartDashboard.putNumber("Jayden Sun" + steerMotor.getDeviceID(), newRotations - steerMotor.getRotorPosition().getValue());
       setSteerPosition(newRotations);
 
     }
@@ -210,47 +214,123 @@ public class SwerveModule {
     steerMotor.setRotorPosition(-(initialCANCoderValue - CANCoderDriveStraightSteerSetPoint) * Constants.MotorConstants.STEER_MOTOR_GEAR_RATIO);
   }
 
-  public static SwerveModuleState optimize(
-      SwerveModuleState desiredState, Rotation2d currentAngle) {
+  // public static SwerveModuleState optimize(SwerveModuleState desiredState, Rotation2d currentAngle) {
+  //   double targetAngle = placeInAppropriate0To360Scope(currentAngle.getDegrees(), desiredState.angle.getDegrees());
+  //   double targetSpeed = desiredState.speedMetersPerSecond;
+  //   double delta = targetAngle - currentAngle.getDegrees();
+  //   if (Math.abs(delta) > 90){
+  //       targetSpeed = -targetSpeed;
+  //       targetAngle = delta > 90 ? (targetAngle -= 180) : (targetAngle += 180);
+  //   }   
+  //   return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
+  // }
 
-    var currentDegrees = currentAngle.getDegrees();
-    var desiredDegrees = desiredState.angle.getDegrees();
+//   private static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+//     double lowerBound;
+//     double upperBound;
+//     double lowerOffset = scopeReference % 360;
+//     if (lowerOffset >= 0) {
+//         lowerBound = scopeReference - lowerOffset;
+//         upperBound = scopeReference + (360 - lowerOffset);
+//     } else {
+//         upperBound = scopeReference - lowerOffset;
+//         lowerBound = scopeReference - (360 + lowerOffset);
+//     }
+//     while (newAngle < lowerBound) {
+//         newAngle += 360;
+//     }
+//     while (newAngle > upperBound) {
+//         newAngle -= 360;
+//     }
+//     if (newAngle - scopeReference > 180) {
+//         newAngle -= 360;
+//     } else if (newAngle - scopeReference < -180) {
+//         newAngle += 360;
+//     }
+//     return newAngle;
+// }
+  // public static SwerveModuleState optimize(
+  //     SwerveModuleState desiredState, Rotation2d currentAngle) {
 
-    while (currentDegrees - desiredDegrees > 180.0){
-      desiredDegrees = desiredDegrees + 360;
-    }
+  //   var currentDegrees = currentAngle.getDegrees();
+  //   var desiredDegrees = desiredState.angle.getDegrees();
 
-    while (currentDegrees - desiredDegrees < -180.0){
-      desiredDegrees = desiredDegrees - 360;
-    }
+  //   while (currentDegrees - desiredDegrees > 180.0){
+  //     desiredDegrees = desiredDegrees + 360;
+  //   }
 
-    var delta = desiredState.angle.minus(currentAngle);
+  //   while (currentDegrees - desiredDegrees < -180.0){
+  //     desiredDegrees = desiredDegrees - 360;
+  //   }
+
+  //   var delta = desiredState.angle.minus(currentAngle);
     
-    if (delta.getDegrees() > 90.0) {
+  //   if (delta.getDegrees() > 90.0) {
 
-      return new SwerveModuleState(
+  //     return new SwerveModuleState(
 
           
-          -desiredState.speedMetersPerSecond,
-          Rotation2d.fromDegrees(desiredDegrees - 180));
+  //         -desiredState.speedMetersPerSecond,
+  //         Rotation2d.fromDegrees(desiredDegrees - 180));
     
-    }
+  //   }
 
-    else if (delta.getDegrees() < - 90) {
-      return new SwerveModuleState(
+  //   else if (delta.getDegrees() < - 90) {
+  //     return new SwerveModuleState(
 
-      -desiredState.speedMetersPerSecond,
-      Rotation2d.fromDegrees(desiredDegrees + 180));
+  //     -desiredState.speedMetersPerSecond,
+  //     Rotation2d.fromDegrees(desiredDegrees + 180));
       
       
-     } else {
-      return new SwerveModuleState(desiredState.speedMetersPerSecond, Rotation2d.fromDegrees(desiredDegrees));
+  //    } else {
+  //     return new SwerveModuleState(desiredState.speedMetersPerSecond, Rotation2d.fromDegrees(desiredDegrees));
+  //   }
+  // }
+  public static SwerveModuleState optimize(SwerveModuleState desiredState, Rotation2d currentAngle) {
+    double targetAngle = placeInAppropriate0To360Scope(
+        currentAngle.getDegrees(), desiredState.angle.getDegrees()
+    );
+    double targetSpeed = desiredState.speedMetersPerSecond;
+    double delta = targetAngle - currentAngle.getDegrees();
+
+    if (Math.abs(delta) > 90) {
+        targetSpeed = -targetSpeed;
+        targetAngle = delta > 90 ? (targetAngle -= 180) : (targetAngle += 180);
+    }        
+
+    return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
+}
+
+private static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+    double lowerBound;
+    double upperBound;
+    double lowerOffset = scopeReference % 360;
+    if (lowerOffset >= 0) {
+        lowerBound = scopeReference - lowerOffset;
+        upperBound = scopeReference + (360 - lowerOffset);
+    } else {
+        upperBound = scopeReference - lowerOffset;
+        lowerBound = scopeReference - (360 + lowerOffset);
     }
-  }
-
-
+    while (newAngle < lowerBound) {
+        newAngle += 360;
+    }
+    while (newAngle > upperBound) {
+        newAngle -= 360;
+    }
+    if (newAngle - scopeReference > 180) {
+        newAngle -= 360;
+    } else if (newAngle - scopeReference < -180) {
+        newAngle += 360;
+    }
+    return newAngle;
+} 
   public double getCanCoderValue(){
     return canCoder.getAbsolutePosition().getValue();
+  }
+
+  public double getRotationDegree(){
+    return rotationsToAngle(steerMotor.getRotorPosition().getValue(), MotorConstants.STEER_MOTOR_GEAR_RATIO);
   }
 }
 

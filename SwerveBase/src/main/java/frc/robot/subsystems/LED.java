@@ -13,7 +13,7 @@ public class LED extends SubsystemBase {
   AddressableLED m_led;
   AddressableLEDBuffer m_ledBuffer;
   public LED() {
-    m_led = new AddressableLED(9);
+    m_led = new AddressableLED(5);
 
     // Reuse buffer
     // Default to a length of 60, start empty output

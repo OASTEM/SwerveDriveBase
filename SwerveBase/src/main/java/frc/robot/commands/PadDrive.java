@@ -44,7 +44,7 @@ public class PadDrive extends CommandBase {
       x = pad.getLeftAnalogYAxis() * -MotorConstants.MAX_SPEED * MotorConstants.SLOW_SPEED;
     }
 
-    if (Constants.MotorConstants.AACORN_MODE) {
+    else if (Constants.MotorConstants.AACORN_MODE) {
       y = pad.getLeftAnalogXAxis() * MotorConstants.MAX_SPEED * MotorConstants.AACORN_SPEED;
       x = pad.getLeftAnalogYAxis() * -MotorConstants.MAX_SPEED * MotorConstants.AACORN_SPEED;
     }
