@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
 // Copyright (c) FIRST and other WPILib contributors.
@@ -39,7 +39,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private Rotation2d gyroAngle;
   private Pigeon2 pidggy;
   public SwerveDriveOdometry swerveOdometry;
-  public AutoBuilder shawnG;
+  // public AutoBuilder shawnG;
 
   private double rot;
   private boolean vision;
@@ -73,7 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
             
     };
 
-    shawnG = new AutoBuilder();
+    // shawnG = new AutoBuilder();
     
 
     swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.kinematics, Rotation2d.fromDegrees(getYaw()), getModulePositions());
@@ -351,22 +351,22 @@ public void chassisSpeedsDrive(ChassisSpeeds chassisSpeeds){
     modules[i].setState(states[i]);
   }
 }
-public void methodName(){
-  shawnG.configureHolonomic(
-        this::getPose, // Robot pose supplier
-        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-        this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::chassisSpeedsDrive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-            4.5, // Max module speed, in m/s
-            0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
-        this // Reference to this subsystem to set requirements
-    );
-}
+// public void methodName(){
+//   shawnG.configureHolonomic(
+//         this::getPose, // Robot pose supplier
+//         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+//         this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+//         this::chassisSpeedsDrive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+//         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+//             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+//             new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+//             4.5, // Max module speed, in m/s
+//             0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+//             new ReplanningConfig() // Default path replanning config. See the API for the options here
+//         ),
+//         this // Reference to this subsystem to set requirements
+//     );
+// }
   
 
   

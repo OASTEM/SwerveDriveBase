@@ -37,16 +37,16 @@ public class PathLoader {
         return newPose;
     }
 
-    public static PPSwerveControllerCommand loadPath(String name, SwerveSubsystem swerveSubsystem) {
-        Consumer<SwerveModuleState[]> consumer = a -> swerveSubsystem.setAutonSwerveModuleStates(a);
-        return new PPSwerveControllerCommand(
-                getPath(name),
-                swerveSubsystem::getOdoPose,
-                SwerveConstants.kinematics,
-                x,
-                y,
-                theta,
-                consumer,
-                swerveSubsystem);
-    }
+    // public static PPSwerveControllerCommand loadPath(String name, SwerveSubsystem swerveSubsystem) {
+    //     Consumer<SwerveModuleState[]> consumer = a -> swerveSubsystem.setAutonSwerveModuleStates(a);
+    //     return new PPSwerveControllerCommand(
+    //             getPath(name),
+    //             swerveSubsystem::getOdoPose,
+    //             SwerveConstants.kinematics,
+    //             x,
+    //             y,
+    //             theta,
+    //             consumer,
+    //             swerveSubsystem);
+    // }
 }
