@@ -151,10 +151,6 @@ public class SwerveSubsystem extends SubsystemBase {
     pidggy.reset();
   }
 
-  public void heading180() {
-    pidggy.setYaw(180);
-  }
-
   // public void resetPitch(){
   //   pidggy.setYawPitchRoll(0,0,0);
   // }
@@ -212,13 +208,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     gyroAngle = getRotationPidggy();
     estimator.update(gyroAngle, getModulePositions());
-    // System.out.print("Pitch" + getPitch() + " ");
-    // System.out.print("Roll" + getRoll() + " ");
-    // System.out.println("Yaw" + getYaw());
-    // for (int i = 0; i < modules.length; i++) {
-    //   modules[i].setDebugPID(Constants.DebugMode.debugMode);
-    // }
-    // SmartDashboard.putNumber("NavXXXX", navX.getFusedHeading());
   }
 
   public double getPitch(){
