@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-// import com.pathplanner.lib.auto.AutoBuilder;
+
 
 import edu.wpi.first.math.controller.PIDController;
 // Copyright (c) FIRST and other WPILib contributors.
@@ -72,9 +72,6 @@ public class SwerveSubsystem extends SubsystemBase {
             Constants.SwerveConstants.CANCoderValue12)
             
     };
-
-    // shawnG = new AutoBuilder();
-    
 
     swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.kinematics, Rotation2d.fromDegrees(getYaw()), getModulePositions());
 
@@ -351,7 +348,7 @@ public void chassisSpeedsDrive(ChassisSpeeds chassisSpeeds){
     modules[i].setState(states[i]);
   }
 }
-// public void methodName(){
+// public void hehehehaw(){
 //   shawnG.configureHolonomic(
 //         this::getPose, // Robot pose supplier
 //         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
