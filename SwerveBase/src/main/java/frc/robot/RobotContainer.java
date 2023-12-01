@@ -6,7 +6,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.JaydenAuto;
 import frc.robot.commands.PadDrive;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -19,6 +18,8 @@ import javax.management.InstanceAlreadyExistsException;
 import javax.naming.OperationNotSupportedException;
 import javax.net.ssl.SSLSocket;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
@@ -56,7 +57,7 @@ public class RobotContainer {
   private final JoystickButton rightBumper;
   private final JoystickButton leftBumper;
 
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // private final SendableChooser<Command> autoChooser;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -78,9 +79,12 @@ public class RobotContainer {
     swerveSubsystem.setDefaultCommand(new PadDrive(swerveSubsystem, pad, true));
 
     //Configure auto chooser
-    SmartDashboard.putData("Auto Chooser", m_chooser);
+
+
 
     configureBindings();
+    // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
   }
   
   /**
@@ -110,9 +114,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return swerveSubsystem.followTrajectoryCommand(bluePath, true);
-    return new JaydenAuto(swerveSubsystem);
-    // return m_chooser.getSelected();
+    // Load the path you want to follow using its name in the GUI
+    PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
+
+    // Create a path following command using AutoBuilder. This will also trigger event markers.
+    return AutoBuilder.followPathWithEvents(path);
   }
 
   /**
