@@ -19,6 +19,7 @@ import javax.naming.OperationNotSupportedException;
 import javax.net.ssl.SSLSocket;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -114,11 +115,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Load the path you want to follow using its name in the GUI
-    PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
 
-    // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return AutoBuilder.followPathWithEvents(path);
+    return new PathPlannerAuto("Test Auto");
   }
 
   /**
