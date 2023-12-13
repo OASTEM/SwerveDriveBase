@@ -6,9 +6,11 @@
 
 package frc.robot;
 
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.JaydenAuto;
 import frc.robot.commands.PadDrive;
 import frc.robot.subsystems.LED;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.utils.LogitechGamingPad;
 
@@ -48,7 +50,8 @@ public class RobotContainer {
   private final SwerveSubsystem swerveSubsystem;
   private final LogitechGamingPad pad;
   private final LED led;
-  
+  private final Limelight limelight;
+
   private final JoystickButton padA;
   private final JoystickButton padB;
   private final JoystickButton padX;
@@ -64,7 +67,7 @@ public class RobotContainer {
     
     pad = new LogitechGamingPad(0);
     led = new LED();
-    // limelight = new Limelight();
+    limelight = new Limelight();
    
     
     padA = new JoystickButton(pad, 1);
@@ -75,8 +78,8 @@ public class RobotContainer {
     leftBumper = new JoystickButton(pad, 5);
 
     swerveSubsystem = new SwerveSubsystem();
-    swerveSubsystem.setDefaultCommand(new PadDrive(swerveSubsystem, pad, true));
-
+    // swerveSubsystem.setDefaultCommand(new PadDrive(swerveSubsystem, pad, true));
+    swerveSubsystem.setDefaultCommand(new AutoAlign(swerveSubsystem, limelight, led));
     //Configure auto chooser
     SmartDashboard.putData("Auto Chooser", m_chooser);
 
